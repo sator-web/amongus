@@ -1,0 +1,490 @@
+<html>
+<head>
+<meta charset='utf-8'>
+</head>
+<title>HTML5</title>
+<body>
+<canvas id='canvas'>
+</canvas>
+<script src="cmanObjMove_v091.js" charset="utf-8"></script>
+<script type="text/javascript">
+<!--
+//javascript初期表示
+function pageOnload(){
+	document.getElementById("toimg").style.display = "none";
+	document.getElementById("jstextimg").style.display = "none";
+
+	if(document.getElementById("tmCgiSideOff").value != '1'){
+
+		document.getElementById("drawarea").width = 4000;
+	}else{
+
+		document.getElementById("drawarea").width = 300;}
+}
+
+function jsdisp(){
+	var wobj=document.getElementById("jstextimg");
+	if (wobj.style.display == "none"){
+		wobj.style.display = "";
+	} else {
+		wobj.style.display = "none";
+		return;}
+
+	var wOutSampleB1 = "";	// ヘッダー
+	var wOutSampleB3 = "";	// 変換テーブル定義１
+	var wOutSampleB4 = "";	// 変換テーブル定義２
+	var wOutSampleB5 = "";	// 変換テーブル
+	var wOutSampleB6 = "";	// 変換テーブル
+	var wOutSampleB7 = "";	// サンプルのメイン
+	var wOutSampleB9 = "";	// フッター
+
+	// --- メイン部 ---
+	wOutSampleB3+= "// -------------------------------------------------------------<br>";
+	wOutSampleB3+= "// <canvas>タグで <br>";
+	wOutSampleB3+= "// onMouseDown=\"startDraw(event)\" <br>";
+	wOutSampleB3+= "// onMouseMove=\"Draw(event)\" <br>";
+	wOutSampleB3+= "// onMouseUp=\"endDraw(event)\" で実行します <br>";
+	wOutSampleB3+= "// -------------------------------------------------------------<br>";
+	wOutSampleB3+= "//mousedownチェック用<br>";
+	wOutSampleB3+= "var mouseDown = false;<br>";
+	wOutSampleB3+= "//マウス座標保存用<br>";
+	wOutSampleB3+= "var wbound = 0;<br>";
+	wOutSampleB3+= "var stX = 0;<br>";
+	wOutSampleB3+= "var stY = 0;<br>";
+	wOutSampleB3+= "var x = 0;<br>";
+	wOutSampleB3+= "var y = 0;<br>";
+	wOutSampleB3+= "//canvas要素保存用<br>";
+	wOutSampleB3+= "var canvas;<br>";
+	wOutSampleB3+= "var context;<br>";
+
+	wOutSampleB3+= "//描画の開始<br>";
+	wOutSampleB3+= "function startDraw(event){<br>";
+	wOutSampleB3+= "//マウスボタンが押された<br>";
+	wOutSampleB3+= "mouseDown = true;<br>";
+	wOutSampleB3+= "//canvasの絶対座標を取得<br>";
+	wOutSampleB3+= "wbound = event.target.getBoundingClientRect() ;<br>";
+	wOutSampleB3+= "//マウスの座標（始点）をセット<br>";
+	wOutSampleB3+= "stX = event.clientX - wbound.left;<br>";
+	wOutSampleB3+= "stY = event.clientY - wbound.top;}<br><br>";
+
+	wOutSampleB3+= "function Draw(event){<br>";
+	wOutSampleB3+= "//マウスボタンが押されていれば描画<br>";
+	wOutSampleB3+= "if (mouseDown){<br>";
+	wOutSampleB3+= "//キャンバスの取得<br>";
+	wOutSampleB3+= "canvas = document.getElementById(\"drawarea\");<br>";
+	wOutSampleB3+= "//コンテキストの取得<br>";
+	wOutSampleB3+= "context = canvas.getContext(\"2d\");<br>";
+	wOutSampleB3+= "//マウスの座標(終点）を取得<br>";
+	wOutSampleB3+= "x = event.clientX - wbound.left;<br>";
+	wOutSampleB3+= "y = event.clientY - wbound.top;<br>";
+	wOutSampleB3+= "//パスの開始<br>";
+	wOutSampleB3+= "context.beginPath();<br>";
+	wOutSampleB3+= "//線の色セット<br>";
+	switch (wltype) {
+	case "fillrect":
+	case "fillarc":
+		wOutSampleB3+= "context.fillStyle = \"" + wlcolor + "\";<br>";
+		break;
+	default:
+		wOutSampleB3+= "context.strokeStyle = \"" + wlcolor + "\";<br>";
+		break;
+	}
+	wOutSampleB3+= "//線の太さセット<br>";
+	wOutSampleB3+= "context.lineWidth = " + wlwidthv + ";<br>";
+	wOutSampleB3+= "//線端の形状セット<br>";
+	wOutSampleB3+= "context.lineCap = \"round\";<br>";
+	//フリーハンド、消しゴムを描く
+	switch (wltype) {
+	case "free":
+	case "erase":
+		if (wltype == "free") {
+			//消しゴム解除
+			wOutSampleB3+= "context.globalCompositeOperation = 'source-over';<br>";
+		}else{
+			wOutSampleB3+= "context.globalCompositeOperation = 'destination-out';<br>";
+		}
+
+		wOutSampleB3+= "context.moveTo(stX,stY);<br>";
+		wOutSampleB3+= "context.lineTo(x,y);<br>";
+		wOutSampleB3+= "context.stroke();<br>";
+		wOutSampleB3+= "//座標（始点）の切替<br>";
+		wOutSampleB3+= "stX = x;<br>";
+		wOutSampleB3+= "stY = y;}}<br><br>";
+		break;
+	default:
+		wOutSampleB3+= "}}<br><br>";
+		break;
+	}
+
+
+	wOutSampleB3+= "//描画の終了<br>";
+	wOutSampleB3+= "function endDraw(event){<br>";
+	wOutSampleB3+= "//マウスボタンが押されていれば描画<br>";
+	wOutSampleB3+= "if (mouseDown){<br>";
+
+	//線の形状セット
+	switch (wltype) {
+	case "free":
+	case "erase":
+		break;
+	case "clear":
+		wOutSampleB3+= "var whigh = x - stX;<br>";
+		wOutSampleB3+= "var wwidth = y - stY;<br>";
+		wOutSampleB3+= "context.clearRect(stX,stY,whigh,wwidth);<br>";
+		break;
+	case "rect":
+		wOutSampleB3+= "var whigh = x - stX;<br>";
+		wOutSampleB3+= "var wwidth = y - stY;<br>";
+		wOutSampleB3+= "context.strokeRect(stX,stY,whigh,wwidth);<br>";
+		break;
+	case "fillrect":
+		wOutSampleB3+= "var whigh = x - stX;<br>";
+		wOutSampleB3+= "var wwidth = y - stY;<br>";
+		wOutSampleB3+= "context.fillRect(stX,stY,whigh,wwidth);<br>";
+		break;
+	case "arc":
+		wOutSampleB3+= "var whigh = x - stX;<br>";
+		wOutSampleB3+= "context.arc(stX,stY,whigh,0,Math.PI*2,false);<br>";
+		wOutSampleB3+= "context.stroke();<br>";
+		break;
+	case "fillarc":
+		wOutSampleB3+= "var whigh = x - stX;<br>";
+		wOutSampleB3+= "context.arc(stX,stY,whigh,0,Math.PI*2,false);<br>";
+		wOutSampleB3+= "context.fill();<br>";
+		break;
+	default:
+		wOutSampleB3+= "context.moveTo(stX,stY);<br>";
+		wOutSampleB3+= "context.lineTo(x,y);<br>";
+		wOutSampleB3+= "context.stroke();<br>";
+		break;
+	}
+	wOutSampleB3+= "//マウスボタンが離された<br>";
+	wOutSampleB3+= "mouseDown = false;}}<br>";
+
+	var goScript = wOutSampleB3 + "<br>" + wOutSampleB4;
+	goScript = goScript.replace(/&lt;/g, "<");
+	goScript = goScript.replace(/&gt;/g, ">");
+	goScript = goScript.replace(/=&quot;/g, "\"");
+	goScript = goScript.replace(/<br>/g, "\n");
+
+	document.getElementById("creSample").value = goScript;
+
+}
+
+
+
+//mousedownチェック用
+var mouseDown = false;
+
+//マウス始点
+var wbound = 0;
+var stX = 0;
+var stY = 0;
+var x;
+var y;
+
+var canvas;
+var context;
+
+//----------------------------熊谷変更--------------------------↓↓↓
+//入力値保存用
+var wltype;
+var wlcolor =document.forms.form1.lcolor.value;
+var wlwidth;
+var wlwidthv = 5;
+//----------------------------熊谷変更-------------------------↑↑↑
+//描画の開始
+function startDraw(event){
+	//マウスボタンが押された
+	mouseDown = true;
+
+	//canvasの絶対座標を取得
+	wbound = event.target.getBoundingClientRect() ;
+	//マウスの座標（始点）をセット
+	stX = event.clientX - wbound.left;
+	stY = event.clientY - wbound.top;
+	//alert("start = " + wbound.left + " : " + wbound.top);
+}
+
+function Draw(event){
+var wradio;
+//マウスボタンが押されていれば描画
+if (mouseDown){
+	//線の形状の取得
+	wradio = document.getElementsByName("ltype");
+	for(var i = 0; i < wradio.length; i++){
+		if (wradio[i].checked) {
+			wltype = wradio[i].value;
+			break;
+	}}
+//-------------------------↓↓熊谷変更した↓----------------------------
+	//線の色の取得
+	wradio = document.getElementsByName("lcolor");
+	wlcolor = document.forms.form1.lcolor.value;
+//	wradio = document.getElementsByName("lcolor");
+//	for(var i = 0; i < wradio.length; i++){
+//		if (wradio[i].checked) {
+//			wlcolor = wradio[i].value;
+//			break;
+//	}}
+//-------------------------↑↑熊谷変更↑↑----------------------------
+	//線の太さの取得
+	wradio = document.getElementsByName("lwidth");
+		for(var i = 0; i < wradio.length; i++){
+		if (wradio[i].checked) {
+			wlwidth = wradio[i].value;
+			break;
+	}}
+//alert("wltype = " + wltype + " , wlcolor = " + wlcolor + " , wlwidth = " + wlwidth);
+	//キャンバスの取得
+	canvas = document.getElementById("drawarea");
+
+	//コンテキストの取得
+	context = canvas.getContext("2d");
+
+	//マウスの座標(終点）を取得
+	x = event.clientX - wbound.left;
+	y = event.clientY - wbound.top;
+
+	//パスの開始
+	context.beginPath();
+
+	//線の色セット
+	context.strokeStyle = wlcolor;
+	context.fillStyle = wlcolor;
+
+	//線の太さセット
+	switch (wlwidth) {
+	case "tooslim":
+		wlwidthv = 5;
+		break;
+	case "slim":
+		wlwidthv = 10;
+		break;
+	case "wide":
+		wlwidthv = 20;
+		break;
+	case "toowide":
+		wlwidthv = 25;
+		break;
+	default:
+		wlwidthv = 15;
+		break;
+	}
+	context.lineWidth = wlwidthv;
+
+	//線端の形状セット
+	context.lineCap = "free";
+
+	//線の形状セット
+	switch (wltype) {
+	case "free":
+	case "erase":
+		if (wltype == "free") {
+			//消しゴム解除
+			context.globalCompositeOperation = 'source-over';
+		}else{
+			context.globalCompositeOperation = 'destination-out';
+		}
+
+		context.moveTo(stX,stY);
+		context.lineTo(x,y);
+		context.stroke();
+		//座標（始点）の切替
+		stX = x;
+		stY = y;
+		break;
+	default:
+		break;
+	}
+}}
+
+//描画
+function endDraw(event){
+//マウスボタンが押されていれば描画
+if (mouseDown){
+	//消しゴム解除
+	context.globalCompositeOperation = 'source-over';
+
+	//線の形状セット
+	switch (wltype) {
+	case "free":
+	case "erase":
+		break;
+	case "clear":
+		var whigh = x - stX;
+		var wwidth = y - stY;
+		context.clearRect(stX,stY,whigh,wwidth);
+		break;
+	case "rect":
+		var whigh = x - stX;
+		var wwidth = y - stY;
+		context.strokeRect(stX,stY,whigh,wwidth);
+		break;
+	case "fillrect":
+		var whigh = x - stX;
+		var wwidth = y - stY;
+		context.fillRect(stX,stY,whigh,wwidth);
+		break;
+	case "arc":
+		var whigh = x - stX;
+		context.arc(stX,stY,whigh,0,Math.PI*2,false);
+		context.stroke();
+		break;
+	case "fillarc":
+		var whigh = x - stX;
+		context.arc(stX,stY,whigh,0,Math.PI*2,false);
+		context.fill();
+		break;
+	default:
+		context.moveTo(stX,stY);
+		context.lineTo(x,y);
+		context.stroke();
+		break;
+	}
+
+	//マウスボタンが離された
+	 mouseDown = false;
+}}
+//画像に変換＆表示する
+function urldisp(){
+	var wobj=document.getElementById("toimg");
+	if (wobj.style.display == "none"){
+		wobj.style.display = "";
+	} else {
+		wobj.style.display = "none";
+		return;}
+	var wimg = canvas.toDataURL();
+	document.getElementById("urlimg").src = wimg;
+}
+
+
+function onButtonClick(val) {
+	document.forms.form1.lcolor.value=val
+}
+
+// -->
+</script>
+
+  <div class="areadiv" cmanOMat="area"  >
+    <form name="form1" action="">
+					<tbody>
+					
+
+
+					<input type="radio" name="ltype" value="free" checked>
+<!--				<label><input type="radio" name="ltype" value="line">　直線　</label> 
+					<label><input type="radio" name="ltype" value="rect">　四角形（枠線のみ）　</label>
+					<label><input type="radio" name="ltype" value="fillrect">　四角形（塗り潰し）</label><br>
+					<label><input type="radio" name="ltype" value="arc">　円（枠線のみ）　</label>
+					<label><input type="radio" name="ltype" value="fillarc">　円（塗り潰し）　</label>
+					<label><input type="radio" name="ltype" value="erase">　消しゴム（白線）　</label>
+					<label><input type="radio" name="ltype" value="clear">　エリア消去</label>
+-->
+					
+					
+					<label><input type="radio" name="lwidth" value="tooslim"checked>　</label>
+<!--					<label><input type="radio" name="lwidth" value="slim">　細　</label>
+					<label><input type="radio" name="lwidth" value="norm" >　普通　</label>
+					<label><input type="radio" name="lwidth" value="wide">　太　</label>
+					<label><input type="radio" name="lwidth" value="toowide">　極太</label>
+-->
+
+					
+<th>線の色</th>
+<!--	<input type="text" name="lcolor" value="red" size="30"> -->
+
+	<input type="hidden" name="lcolor" value="red"  size="20">
+				
+<!--					<label><input type="radio" name="lcolor" value="red" checked>　赤　</label>
+					<label><input type="radio" name="lcolor" value="blue">　青　</label>
+					<label><input type="radio" name="lcolor" value="green">　緑　</label>
+					<label><input type="radio" name="lcolor" value="magenta">　ピンク</label>
+					<label><input type="radio" name="lcolor" value="orange">　オレンジ</label>
+					<label><input type="radio" name="lcolor" value="yellow">　黄</label>
+					<label><input type="radio" name="lcolor" value="black">　黒</label>
+					<label><input type="radio" name="lcolor" value="grey">　白</label>
+					<label><input type="radio" name="lcolor" value="blueviolet">　紫</label>
+					<label><input type="radio" name="lcolor" value="firebrick">　茶</label>
+					<label><input type="radio" name="lcolor" value="cyan">　シアン</label>
+					<label><input type="radio" name="lcolor" value="lime">　ライム</label>
+-->
+
+       	<input type="button" id="red"   value="赤" 	style="font-weight:bold;  color:#ffffff;background-color:#ff0000;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.red.id;onButtonClick(val)})()" />
+       	<input type="button" id="blue"   value="青" 	style="font-weight:bold;  color:#ffffff;background-color:#0000ff;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.blue.id;onButtonClick(val)})()" />
+       	<input type="button" id="green"   value="緑" 	style="font-weight:bold;  color:#ffffff;background-color:#008000;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.green.id;onButtonClick(val)})()" />
+       	<input type="button" id="magenta"   value="ピンク" 	style="font-weight:bold;  color:#ffffff;background-color:#ff00ff;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.magenta.id;onButtonClick(val)})()" />
+       	<input type="button" id="orange"   value="オレンジ" 	style="font-weight:bold;  color:#ffffff;background-color:#ffa500;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.orange.id;onButtonClick(val)})()" />
+       	<input type="button" id="yellow"   value="黄" 	style="font-weight:bold;  color:#000000;background-color:#ffff00;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.yellow.id;onButtonClick(val)})()" />
+       	<input type="button" id="black"   value="黒" 	style="font-weight:bold;  color:#ffffff;background-color:#000000;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.black.id;onButtonClick(val)})()" />
+       	<input type="button" id="white"   value="白" 	style="font-weight:bold;  color:#000000;background-color:#ffffff;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.white.id;onButtonClick(val)})()" />
+       	<input type="button" id="blueviolet"   value="紫" 	style="font-weight:bold;  color:#ffffff;background-color:#a754cb;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.blueviolet.id;onButtonClick(val)})()" />
+       	<input type="button" id="firebrick"   value="茶" 	style="font-weight:bold;  color:#ffffff;background-color:#864a2b;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.firebrick.id;onButtonClick(val)})()" />
+       	<input type="button" id="cyan"   value="シアン" 	style="font-weight:bold;  color:#000000;background-color:#00ffff;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.cyan.id;onButtonClick(val)})()" />
+       	<input type="button" id="lime"   value="ライム" 	style="font-weight:bold;  color:#000000;background-color:#00ff00;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.lime.id;onButtonClick(val)})()" />
+       	
+					</tbody>
+
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+
+
+<!--
+				<div class="selSample">マウスによる線画を描く　（マウスを押したまま移動してはなす）</div>
+-->
+				<div class="bg_Sample">
+					<canvas id="drawarea" class="bg_white" style="  background: url(img/map/skeld.png) ;background-repeat: repeat-x;  background-size:80%;"  width="4000" height="500"
+					onMouseDown="startDraw(event)"
+					onMouseMove="Draw(event)"
+					onMouseUp="endDraw(event)"></canvas>
+
+				</div>
+
+
+<div>
+<img src="img/c01/aka.png" cmanOMat="movearea">
+<img src="img/c01/bla.png" cmanOMat="movearea">
+<img src="img/c01/blo.png" cmanOMat="movearea">
+<img src="img/c01/blu.png" cmanOMat="movearea">
+<img src="img/c01/cya.png" cmanOMat="movearea">
+<img src="img/c01/gre.png" cmanOMat="movearea">
+<img src="img/c01/lim.png" cmanOMat="movearea">
+<img src="img/c01/ora.png" cmanOMat="movearea">
+<img src="img/c01/pin.png" cmanOMat="movearea">
+<img src="img/c01/pur.png" cmanOMat="movearea">
+<img src="img/c01/whi.png" cmanOMat="movearea">
+<img src="img/c01/yel.png" cmanOMat="movearea">
+<br>
+<img src="img/c01/aka.png" cmanOMat="movearea">
+<img src="img/c01/bla.png" cmanOMat="movearea">
+<img src="img/c01/blo.png" cmanOMat="movearea">
+<img src="img/c01/blu.png" cmanOMat="movearea">
+<img src="img/c01/cya.png" cmanOMat="movearea">
+<img src="img/c01/gre.png" cmanOMat="movearea">
+<img src="img/c01/lim.png" cmanOMat="movearea">
+<img src="img/c01/ora.png" cmanOMat="movearea">
+<img src="img/c01/pin.png" cmanOMat="movearea">
+<img src="img/c01/pur.png" cmanOMat="movearea">
+<img src="img/c01/whi.png" cmanOMat="movearea">
+<img src="img/c01/yel.png" cmanOMat="movearea">
+<br>
+<img src="img/c01/aka.png" cmanOMat="movearea">
+<img src="img/c01/bla.png" cmanOMat="movearea">
+<img src="img/c01/blo.png" cmanOMat="movearea">
+<img src="img/c01/blu.png" cmanOMat="movearea">
+<img src="img/c01/cya.png" cmanOMat="movearea">
+<img src="img/c01/gre.png" cmanOMat="movearea">
+<img src="img/c01/lim.png" cmanOMat="movearea">
+<img src="img/c01/ora.png" cmanOMat="movearea">
+<img src="img/c01/pin.png" cmanOMat="movearea">
+<img src="img/c01/pur.png" cmanOMat="movearea">
+<img src="img/c01/whi.png" cmanOMat="movearea">
+<img src="img/c01/yel.png" cmanOMat="movearea">
+</div>
+
+  </div>
+
+</body>
+</form>
+</html>
