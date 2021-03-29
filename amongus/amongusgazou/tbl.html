@@ -188,7 +188,7 @@ var context;
 //----------------------------熊谷変更--------------------------↓↓↓
 //入力値保存用
 var wltype;
-var wlcolor =document.forms.form1.lcolor.value;
+var wlcolor =document.forms.form1.lcolor1.value;
 var wlwidth;
 var wlwidthv = 5;
 //----------------------------熊谷変更-------------------------↑↑↑
@@ -218,9 +218,9 @@ if (mouseDown){
 	}}
 //-------------------------↓↓熊谷変更した↓----------------------------
 	//線の色の取得
-	wradio = document.getElementsByName("lcolor");
-	wlcolor = document.forms.form1.lcolor.value;
-//	wradio = document.getElementsByName("lcolor");
+	wradio = document.getElementsByName("lcolor1");
+	wlcolor = document.forms.form1.lcolor1.value;
+//	wradio = document.getElementsByName("lcolor1");
 //	for(var i = 0; i < wradio.length; i++){
 //		if (wradio[i].checked) {
 //			wlcolor = wradio[i].value;
@@ -359,16 +359,15 @@ function urldisp(){
 
 
 function onButtonClick(val) {
-//	document.forms.form1.lcolor.value=val;
+//	document.forms.form1.lcolor1.value=val;
 var aaa =parent.sub.document.form1.irosentaku.value;
 //var aaa= 123;
-	document.forms.form1.lcolor.value=aaa;
+	document.forms.form1.lcolor1.value=aaa;
 	
 }
-
 function position(){
 //var contentposition=document.forms.form1.drawarea.getBoundingClientrect();
-window.scrollTo(0,180);
+window.scrollTo(0,150);
 }
 
 
@@ -377,6 +376,8 @@ window.scrollTo(0,180);
 
 </script>
 <body onload="position()">
+
+
 
   <div class="areadiv" cmanOMat="area"  >
     <form name="form1" action="">
@@ -391,10 +392,14 @@ window.scrollTo(0,180);
 				<div class="selSample">マウスによる線画を描く　（マウスを押したまま移動してはなす）</div>
 -->
 				<div class="bg_Sample">
-					<canvas id="drawarea" class="bg_white" style="  background: url(img/map/skeld.png) ;background-repeat: repeat-x;  background-size:100%;"  width="1000" height="3400"
+					<canvas id="drawarea" class="bg_white" style="  background: url(img/hyou.png) ;background-repeat: repeat-x;  background-size:100%;"   width="1000" height="100"
 					onMouseDown="startDraw(event)"
 					onMouseMove="Draw(event)"
-					onMouseUp="endDraw(event)"></canvas>
+					onMouseUp="endDraw(event)">
+
+
+
+</canvas>
 
 				</div>
 					<tbody>
@@ -403,7 +408,7 @@ window.scrollTo(0,180);
 
 	<input type="radio" name="ltype" value="free" checked>
 	<label><input type="radio" name="lwidth" value="tooslim"checked>　</label>
-	<input type="text" name="lcolor" value="red"  size="20">
+	<input type="text" name="lcolor1" value="red"  size="20">
 				
 
 

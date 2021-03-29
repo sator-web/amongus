@@ -5,6 +5,14 @@
     <title></title>
 
   <script type="text/javascript" language="javascript">
+  function changefs(){
+window.parent.fs.cols="70%,*";
+}
+  function changeffs(){
+window.parent.fs.cols="30%,*";
+}
+  
+  
         function onButtonClick(val) {
 //先に時刻をテキストとして出力する。
 				var now = new Date();
@@ -158,9 +166,11 @@ window.onload = function(){
 </audio>
 
 
-  
-      	<input type="button" id="id_button10"   value="ゲーム開始" style="width:40%;height:25px;""  onclick="(function(){doReload()})();" />
-     	<input type="button" id="id_button11"   value="日付変更" style="width:35%;height:25px;""  onclick="sound();(function(){hiduke()})()"  />
+      	<input type="button" id="id_button99"   value="サイズ縮小" style="width:90%;height:25px;""  onclick="sound();(function(){changeffs()})()"  />
+      	<input type="button" id="id_button10"   value="ゲーム開始" style="width:30%;height:25px;""  onclick="(function(){doReload()})();" />
+     	<input type="button" id="id_button11"   value="日付変更" style="width:30%;height:25px;""  onclick="sound();(function(){hiduke()})()"  />
+     	<input type="button" id="id_button99"   value="サイズ変更" style="width:30%;height:25px;""  onclick="sound();(function(){changefs()})()"  />
+
 <br><br>
 
  <table border="0" id="tablemap" width="70%" style="font-size: 8pt";>

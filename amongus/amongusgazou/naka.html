@@ -10,18 +10,27 @@
 //javascript初期表示
 
 
+
+
 function onButtonClick(val) {
 		parent.main.document.forms.form1.lcolor.value=val;
+		parent.tbl.document.forms.form1.lcolor1.value=val;
+
 //	document.forms.form1.irosentaku.value=val;
 
 //document.forms.form1.irosentaku.value=parent.migiframe.document.forms.form2.lcolor.value;
-
-
+}
+function sound()
+{
+	// [ID:sound-file]の音声ファイルを再生[play()]する
+//	document.getElementById( 'sound-file' ).play() ;
 }
 
 
 
+
 </script>
+<body >
 <div>
 <!--  <div class="areadiv" cmanOMat="area"  > -->
     <form name="form1" action="">
@@ -39,7 +48,6 @@ function onButtonClick(val) {
        	<input type="button" id="cyan"   value="シアン" 	style="font-weight:bold;  color:#000000;background-color:#00ffff;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.cyan.id;onButtonClick(val)})()" />
        	<input type="button" id="lime"   value="ライム" 	style="font-weight:bold;  color:#000000;background-color:#00ff00;width:50px;height:35px;" onclick="(function(){var val = document.forms.form1.lime.id;onButtonClick(val)})()" />
 </div>
-
 
 
 </form>
